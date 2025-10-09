@@ -1,0 +1,40 @@
+dns_domain_lo="primordial.wisdom"
+#config_eth0="192.168.2.3/24"
+#routes_eth0="default via 192.168.2.1"
+#dns_servers_eth0="127.0.0.1"
+
+#config_eth1="192.168.2.3/24"
+#routes_eth1="default via 192.168.2.1"
+#dns_servers_eth1="127.0.0.1"
+
+config_eth0="null"
+#config_eth1="null"
+#mac_eth0="78:24:af:c6:dc:e7"
+#mac_eth1="50:3e:aa:b0:95:62"
+
+bridge_br0="eth0"
+#bridge_br0="eth1"
+
+# Bridge static config
+config_br0="192.168.2.3/24"
+routes_br0="default via 192.168.2.1"
+dns_servers_br0="127.0.0.1"
+bridge_forward_delay_br0=0
+bridge_hello_time_br0=1000
+
+#### OVS bridge vbr0
+#config_vbr0="192.168.2.3/24"
+#routes_vbr0="default via 192.168.2.1"
+#dns_servers_vbr0="127.0.0.1 1.1.1.1 192.168.2.1 8.8.8.8"
+
+
+#####WIRELESS
+
+#modules="iwd"
+#modules_phy0="iwd debug !wpa_supplicant"
+#modules_wlan0="iwd debug !wpa_supplicant"
+#iwd_wlan0="phy0 debug"
+#config_wlan0="192.168.2.3/24"
+#routes_wlan0="default via 192.168.2.1"
+#dns_servers_wlan0="127.0.0.1"
+#ssid_wlan0="ktmayalu"

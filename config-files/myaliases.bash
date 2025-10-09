@@ -1,0 +1,5 @@
+alias mygrub="grub2-mkconfig -o /boot/grub2/grub.cfg"
+alias sr="su -"
+alias poweroff="openrc-shutdown -p now"
+alias reboot="openrc-shutdown -r now"
+alias rm="rm"

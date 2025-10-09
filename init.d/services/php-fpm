@@ -1,0 +1,96 @@
+#!/sbin/openrc-run
+
+#
+# We support both slot-agnostic and slotted versions of the init
+# script. The slotted versions would be named something like
+# php-fpm-php7.1, and PHP_SLOT below would be set to "php7.1". But we
+# also support a general init script named "php-fpm" that uses
+# whatever the currently-eselected fpm implementation is. In that
+# case, PHP_SLOT winds up set to "php-fpm" and we need to get the
+# actual slot by querying eselect.
+#
+# An open question is, what should we do if the user has both a
+# slot-agnostic and slotted init script, which happen to point to the
+# same slot? In other words, if the user has a php-fpm init script and
+# slot php7.1 eselected, but also a php-fpm-php7.1 init script. Should
+# they manage the same instance? I think so...
+#
+
+PHP_SLOT="${SVCNAME#php-fpm-}"
+
+# OpenRC caches service dependencies at boot time (in the sysinit
+# runlevel), before any non-boot services are started. If we try to
+# run eselect then, it can fail, producing a scary error message (bug
+# 910589). For now, the error message is harmless, but we may be
+# relying on an implementation detail to make that claim: it's
+# important that no other parts of this script are cached when its
+# dependencies are. Nevertheless -- for now at least -- we can avoid
+# the error message by skipping the call to eselect in the sysinit
+# runlevel, because our (empty) depend() function does not use
+# PHP_SLOT in any way.
+if [ "${PHP_SLOT}" = "php-fpm" ] && [ "${RC_RUNLEVEL}" != "sysinit" ]; then
+    # Getting the saved slot allows for clean stops when upgrading to
+    # a new slot This will initially be empty on start and fall
+    # through to the default
+    PHP_SLOT="$(service_get_value PHP_SLOT)"
+    if [ -z "${PHP_SLOT}" ]; then
+        PHP_SLOT="$(eselect php show fpm)"
+    fi
+fi
+
+PHP_FPM_CONF="/etc/php/fpm-${PHP_SLOT}/php-fpm.conf"
+
+command="/usr/lib64/${PHP_SLOT}/bin/php-fpm"
+pidfile="/run/php-fpm-${PHP_SLOT}.pid"
+
+# Force the daemon into the background and make it use our pid file,
+# regardless of what the config file says.
+command_args="--fpm-config ${PHP_FPM_CONF} --pid ${pidfile} --daemonize"
+extra_started_commands="reload"
+extra_commands="configtest"
+
+# Wait five seconds after starting for the pidfile to show up.
+start_stop_daemon_args="--wait 5000 ${PHP_FPM_UMASK:+--umask ${PHP_FPM_UMASK}}"
+
+configtest() {
+    ebegin "Testing PHP FastCGI Process Manager configuration"
+
+    # Hide the "test is successful" message (which goes to stderr) if
+    # the test passed, but show the entire output if the test failed
+    # because it may contain hints about the problem.
+    OUTPUT=$( ${command} ${command_args} --test 2>&1 )
+
+    # Save this so `echo` doesn't clobber it.
+    local exit_code=$?
+    [ $exit_code -ne 0 ] && echo "${OUTPUT}" >&2
+    eend $exit_code
+}
+
+start_pre() {
+    # If this isn't a restart, make sure that the user's config isn't
+    # busted before we try to start the daemon (this will produce
+    # better error messages than if we just try to start it blindly).
+    #
+    # If, on the other hand, this *is* a restart, then the stop_pre
+    # action will have ensured that the config is usable and we don't
+    # need to do that again.
+    if [ "${RC_CMD}" != "restart" ] ; then
+        configtest || return $?
+    fi
+    service_set_value PHP_SLOT "${PHP_SLOT}"
+}
+
+stop_pre() {
+    # If this is a restart, check to make sure the user's config
+    # isn't busted before we stop the running daemon.
+    if [ "${RC_CMD}" = "restart" ] ; then
+        configtest || return $?
+    fi
+}
+
+reload() {
+    configtest || return $?
+    ebegin "Reloading PHP FastCGI Process Manager"
+    start-stop-daemon --signal USR2 --pidfile "${pidfile}"
+    eend $?
+}

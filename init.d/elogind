@@ -1,0 +1,14 @@
+#!/usr/bin/openrc-run
+# Gentoo-style elogind init
+
+description="elogind service manager"
+
+command="/usr/libexec/elogind"
+command_background=true
+pidfile="/run/elogind.pid"
+
+depend() {
+    need dbus
+    provide logind
+    before xdm
+}

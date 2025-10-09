@@ -1,0 +1,8 @@
+# The OpenRC conf.d file that accompanies the php-fpm init script.
+# Not to be confused with the php-fpm.conf file that ships with
+# PHP itself.
+
+# Set the umask of the FPM process to the given (octal) value. This is
+# passed directly to start-stop-daemon. If not specified, the system
+# default will be used.
+#PHP_FPM_UMASK=0002
