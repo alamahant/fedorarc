@@ -1,52 +1,62 @@
 FedoraRC
 
-FedoraRC is an experimental tool to run Fedora with OpenRC instead of systemd.
+FedoraRC is an experimental project that lets you run Fedora using OpenRC as the init system instead of systemd. The main script that handles this transformation is called deliver-us-from-evil.sh and can be found in the scripts directory.
+Overview
 
-Main script: scripts/deliver-us-from-evil.sh
+This repository provides all the necessary components to convert a Fedora system over to OpenRC with elogind for session management and netifrc for network interface control. The approach keeps systemd packages installed to maintain compatibility with DNF and other system tools, but removes all runtime traces of systemd so your system actually boots and runs with OpenRC.
+Repository Structure
 
-This repository contains scripts, OpenRC init scripts, and configuration snippets to bootstrap a Fedora system to run with OpenRC + elogind + netifrc instead of systemd.
+    conf.d - service configuration fragments
 
-It focuses on making the conversion repeatable and safe by leaving systemd packages installed for DNF compatibility while removing runtime traces.
+    init.d - OpenRC service scripts
 
-Repo layout:
-fedorarc/
-conf.d
-config-files
-grub
-init.d
-LICENSE
-README.md
-rules.d
-scripts
-tmpfiles
+    tmpfiles/ and rules.d/ - tmpfiles and udev rules
 
-scripts/ contains installer and helper scripts. Main script is scripts/deliver-us-from-evil.sh
-init.d/ contains OpenRC init scripts
-conf.d/ contains service configuration fragments
-tmpfiles/ and rules.d/ contain tmpfiles and udev rules
-grub/ contains grub assets and templates
-config-files/ contains config snippets
+    grub/ - boot configuration assets
 
-Quick start:
+    config-files/ - system configuration snippets
 
-Clone repository in /root:
+    scripts/ - installation and helper scripts
+
+Quick Start
+
+    Clone the repository:
+
+bash
+
 git clone https://github.com/alamahant/fedorarc.git
 
-Copy the script:
+    Copy the transformation script:
+
+bash
+
 cp fedorarc/scripts/deliver-us-from-evil.sh .
 
-Inspect and run as root:
+    Review and run as root:
+
+bash
+
 ./deliver-us-from-evil.sh
 
-The script will install dependencies, build OpenRC components, configure the system, and remove systemd runtime traces.
+The script handles everything from installing build dependencies to compiling and setting up OpenRC, elogind, and netifrc. It creates a proper initramfs and removes systemd from the boot process while keeping necessary libraries for package compatibility.
+OpenRC Commands
 
-Tested on Fedora, may work on RHEL derivatives.
+    rc-status - check service status
 
-OpenRC commands:
-rc-status - check service status
-rc-service sshd start - start service
-rc-update add sshd default - enable service at boot
+    rc-service sshd start - start a service
 
-After installation, edit /etc/default/grub and regenerate grub config.
+    rc-update add sshd default - enable service at boot
 
-Warning: Experimental project. Test in VMs first.
+Post-Installation
+
+After conversion, update your GRUB configuration:
+
+    Edit /etc/default/grub to set your root device
+
+    Regenerate GRUB config: grub2-mkconfig
+
+Compatibility
+
+Tested on Fedora. Likely works on RHEL derivatives like CentOS Stream, AlmaLinux, and Rocky Linux, though some adjustments might be needed.
+
+Warning: This is experimental software - always test in a virtual machine or on non-critical hardware first.
