@@ -10,24 +10,15 @@ It focuses on making the conversion repeatable and safe by leaving systemd packa
 
 Repo layout:
 fedorarc/
-
-    conf.d
-
-    config-files
-
-    grub
-
-    init.d
-
-    LICENSE
-
-    README.md
-
-    rules.d
-
-    scripts
-
-    tmpfiles
+conf.d
+config-files
+grub
+init.d
+LICENSE
+README.md
+rules.d
+scripts
+tmpfiles
 
 scripts/ contains installer and helper scripts. Main script is scripts/deliver-us-from-evil.sh
 init.d/ contains OpenRC init scripts
@@ -38,16 +29,16 @@ config-files/ contains config snippets
 
 Quick start:
 
-    Clone repository in /root:
-    git clone https://github.com/alamahant/fedorarc.git
+Clone repository in /root:
+git clone https://github.com/alamahant/fedorarc.git
 
 Copy the script:
 cp fedorarc/scripts/deliver-us-from-evil.sh .
 
-    Inspect and run as root:
-    ./deliver-us-from-evil.sh
+Inspect and run as root:
+./deliver-us-from-evil.sh
 
-    The script will install dependencies, build OpenRC components, configure the system, and remove systemd runtime traces.
+The script will install dependencies, build OpenRC components, configure the system, and remove systemd runtime traces.
 
 Tested on Fedora, may work on RHEL derivatives.
 
