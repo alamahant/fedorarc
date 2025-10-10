@@ -2,6 +2,7 @@
 set -e
 
 BUILD_DIR="/root/builds"
+mkdir $BUILD_DIR || true
 
 # ---------------------------
 # Download and install packages
@@ -18,7 +19,7 @@ download_packages() {
         openssh-server openssh-clients \
         cronie rsyslog \
         dbus dbus-devel dbus-daemon polkit-devel \
-        sudo util-linux shadow zstd xz lz4
+        sudo util-linux shadow zstd xz lz4 cpio
 
     dnf install -y \
         libudev-devel \
@@ -34,6 +35,7 @@ download_packages() {
 build_openrc() {
     echo "[*] Building OpenRC..."
     cd "$BUILD_DIR"
+    rm -rf openrc || true
     [ ! -d openrc ] && git clone https://github.com/OpenRC/openrc.git
     cd openrc
 
@@ -50,6 +52,7 @@ build_openrc() {
 build_elogind() {
     echo "[*] Building elogind..."
     cd "$BUILD_DIR"
+    rm -rf elogind || true
     [ ! -d elogind ] && git clone https://github.com/elogind/elogind.git
     cd elogind
     mkdir -p build && cd build
@@ -64,8 +67,10 @@ build_elogind() {
 build_netifrc() {
     echo "[*] Building netifrc..."
     cd "$BUILD_DIR"
+    rm -rf netifrc || true
     [ ! -d netifrc ] && git clone https://github.com/gentoo/netifrc.git
     cd netifrc
+    make
     make install
     echo "[*] netifrc installed. Link interfaces manually if needed."
 }
@@ -139,7 +144,7 @@ fi
     cp -av fedorarc/scripts/rc* /usr/local/bin/ 2>/dev/null || true
 
     echo "[*] Creating aliases..."
-    mkdir -p /etc/bash/bashrc.d
+    mkdir -p /etc/bash/bashrc.d || true
     cp -av fedorarc/config-files/*.bash /etc/bash/bashrc.d/ 2>/dev/null || true
 
     cat <<'EOF' >> /etc/bashrc
@@ -162,7 +167,7 @@ EOF
     cp -av fedorarc/config-files/etc-dnf-dnf-conf /etc/dnf/dnf.conf 2>/dev/null || true
     cp -av fedorarc/config-files/etc-default-grub /etc/default/grub 2>/dev/null || true
 
-    mkdir /etc/dracut.conf.d
+    mkdir /etc/dracut.conf.d || true
     cp -av fedorarc/config-files/dracut-fedorarc.conf /etc/dracut.conf.d/fedorarc.conf 2>/dev/null || true
 
     echo "[*] Needed files installed."
@@ -216,14 +221,15 @@ reset_udev() {
 perform_tasks() {
     echo "=== Creating agetty symlinks and enabling terminals ==="
     for tty in 1 2 3 4 5 6; do
-        ln -sf /etc/agetty /etc/agetty.tty${tty}
-        rc-update add agetty.tty${tty} default
+        ln -sf /etc/init.d/agetty /etc/init.d/agetty.tty${tty}
+        rc-update add agetty.tty${tty} default || true
     done
 
     echo "=== Linking network interfaces and enabling net.eth0 ==="
     ln -sf /etc/init.d/net.lo /etc/init.d/net.eth0
     rc-update add net.eth0 default
-    echo "nameserver 1.1.1.1" > etc/resolv.conf
+    rm -f /etc/resolv.conf
+    echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
     echo "=== Enabling elogind and related systemd services ==="
     rc-update add elogind boot
@@ -232,7 +238,7 @@ perform_tasks() {
 
     # systemd-init emulation in Gentoo
     rc-update add systemd-tmpfiles-setup-dev sysinit
-    rc-update add tmpfiles-setup boot
+    rc-update add systemd-tmpfiles-setup boot
 
     rc-update add udev sysinit
     rc-update add udev-trigger sysinit
@@ -279,21 +285,24 @@ configure_boot() {
 
         cd $BUILD_DIR || exit 1
         rm -rf dracut
+        dnf remove -y --no-autoremove dracut
 
         # Clone the dracut repo
+
         git clone https://github.com/dracutdevs/dracut.git
         cd dracut || exit 1
 
         # Simple configure and make
         ./configure --prefix=/usr
         make
-
-        dnf -y remove dracut
         make install
-    fi
 
+	[[ "$?" -eq 0 ]] && echo "COMPLETED DRACUT INSTALLATION"
+    fi
     # Generate initramfs if none exists
-    dracut --force /boot/initramfs-$KERNEL_VERSION.img --kver $KERNEL_VERSION
+    KERNEL_VERSION=$(ls /lib/modules | head -n1)
+
+    dracut --force /boot/initramfs-"$KERNEL_VERSION".img --kver "$KERNEL_VERSION"
 
     # Check if GRUB is installed
     if ! command -v grub2-install >/dev/null 2>&1; then
