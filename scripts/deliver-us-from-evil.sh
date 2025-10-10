@@ -17,7 +17,7 @@ download_packages() {
         iproute iputils net-tools \
         openssh-server openssh-clients \
         cronie rsyslog \
-        dbus dbus-devel polkit-devel \
+        dbus dbus-devel dbus-daemon polkit-devel \
         sudo util-linux shadow zstd xz lz4
 
     dnf install -y \
@@ -25,7 +25,7 @@ download_packages() {
         systemd-devel libcap-devel pam-devel \
         libselinux-devel gperf python3-jinja2 asciidoc kmod-devel
 
-    dnf install -y cronie rsyslog dhcpcd dbus-daemon
+    dnf install -y cronie rsyslog dhcpcd nano vim
 }
 
 # ---------------------------
@@ -321,13 +321,14 @@ configure_boot() {
             --efi-directory="$ESP_MNT" \
             --bootloader-id=fedora \
             --recheck
-        cd ~
-        cp -a fedorarc/grub/* /usr/lib/grub/
-        cp -a fedorarc/grub/* /boot/grub2/
+        
+        cp -a /usr/lib/grub/x86_64-efi /boot/grub2/
+        
 
 
         echo "GRUB installation complete."
     fi
+
 
     echo "Boot prerequisites satisfied."
 }

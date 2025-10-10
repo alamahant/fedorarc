@@ -1,0 +1,159 @@
+OPENRC MANUAL
+
+OpenRC is a dependency-based init system used to start, stop, and manage system services. It is simple, lightweight, and designed to be compatible with traditional Unix-style init scripts. This document provides an overview of how OpenRC works and how to use it effectively.
+
+BASIC CONCEPTS
+
+OpenRC organizes system services into runlevels. Each runlevel represents a specific system state, such as boot, default, or shutdown. Services can be assigned to one or more runlevels and are started or stopped automatically when entering or leaving that runlevel.
+
+Common runlevels include:
+boot – Services required early in the boot process
+sysinit – Very early system setup (mounted filesystems, udev, tmpfiles)
+default – Regular multi-user mode
+shutdown – Services stopped before the system halts or reboots
+nonetwork – A runlevel without networking
+single – Single-user mode
+
+OpenRC scripts are usually stored in /etc/init.d/
+Configuration files for these services are in /etc/conf.d/
+
+OPENRC COMMANDS
+
+rc-status
+Lists all services and their states across runlevels.
+Example: rc-status
+rc-status default
+rc-status -a (show all runlevels)
+
+rc-service <service> <action>
+Controls a specific service. Common actions include:
+start, stop, restart, reload, status, zap
+Example: rc-service sshd start
+
+rc-update
+Manages which services are started in each runlevel.
+Usage examples:
+rc-update add sshd default (enable at default)
+rc-update delete sshd default (disable at default)
+rc-update add elogind boot (enable at boot)
+rc-update delete elogind default (disable at boot)
+rc-update add sysfs sysinit (enable at sysinit)
+rc-update delete sysfs sysinit (disable at sysinit)
+rc-update show (list all services and runlevels)
+
+rc
+Wrapper command for managing multiple services quickly.
+Usage:
+rc start svc1 svc2 ...
+rc stop svc1 svc2 ...
+rc restart svc1 svc2 ...
+etc
+This command is a convenience wrapper installed by FedoraRC.
+
+rcenable / rcdisable
+Convenience wrappers added by FedoraRC to enable one or more services @default runlevel.
+rcenable svc1 svc2  :adds services to the default runlevel
+rcdisable svc1 svc2 :removes services from the default runlevel
+
+SERVICE MANAGEMENT
+
+Each service has a script located in /etc/init.d/
+Each script supports standard actions like start, stop, restart, and status.
+
+Example service script layout:
+/etc/init.d/sshd – main init script for SSH daemon
+/etc/conf.d/sshd – configuration file for that service
+
+When a service starts, OpenRC automatically ensures that its dependencies are met. For example, a network service will not start until the network interfaces have been initialized.
+
+DEPENDENCIES
+
+Each OpenRC service defines its dependencies in its script header. Example lines:
+need net
+use logger dns
+provide ssh
+
+These lines tell OpenRC the order in which services must start. “need” means required, “use” means optional, and “provide” declares what functionality this service offers to others.
+
+RUNLEVEL MANAGEMENT
+
+Runlevels are stored in /etc/runlevels/
+
+For example:
+/etc/runlevels/boot/
+/etc/runlevels/default/
+/etc/runlevels/sysinit/
+/etc/runlevels/shutdown/
+
+Each directory contains symlinks to the actual service scripts in /etc/init.d/
+
+To see which services belong to a runlevel:
+ls /etc/runlevels/default
+
+To add a service to a runlevel:
+rc-update add servicename default
+
+To remove a service from a runlevel:
+rc-update del servicename default
+
+To manually switch to another runlevel:
+openrc <runlevel>
+
+LOGGING AND OUTPUT
+
+OpenRC logs messages to /var/log/rc.log or syslog depending on configuration. Verbose output can be enabled using rc-service -v or rc-status -v for detailed information.
+
+CONFIGURATION FILES
+
+Main configuration file:
+/etc/rc.conf – global OpenRC settings
+
+Service-specific configurations:
+/etc/conf.d/* – environment and parameters for each service
+
+Tmpfiles configuration:
+/usr/lib/tmpfiles.d/ – defines temporary file handling
+/etc/tmpfiles.d/ – overrides or custom definitions
+
+BOOT AND SHUTDOWN
+
+During boot, OpenRC executes services in this order:
+
+sysinit runlevel
+
+boot runlevel
+
+default runlevel
+
+During shutdown, OpenRC stops services in reverse order:
+
+default runlevel
+
+boot runlevel
+
+shutdown runlevel
+
+UDEV AND NETWORK
+
+udev (via elogind or eudev) initializes device nodes in /dev.
+netifrc manages network interfaces using /etc/init.d/net.* scripts.
+Each interface has a configuration file, e.g. /etc/conf.d/net.eth0
+
+To reinitialize udev:
+rc-service udev restart
+rc-service udev-trigger start
+
+HELPFUL COMMANDS
+
+rc-status - show all services and their states
+rc-service <name> status - show status of a service
+rc-service <name> restart - restart a service
+rc-update show - display all services and runlevels
+rc-update add <name> default - enable service at boot
+rc-update del <name> default - disable service at boot
+rc - wrapper for starting or stopping multiple services
+rcenable / rcdisable - convenience wrappers for managing runlevels
+
+SUMMARY
+
+OpenRC is a fast, reliable, and simple init system designed around dependency management and shell scripts. It is compatible with traditional Unix tools and can coexist with other components such as elogind, udev, and modern desktop environments. FedoraRC uses OpenRC as its core init system, replacing systemd while maintaining compatibility for package management.

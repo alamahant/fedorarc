@@ -6,6 +6,6 @@ Its purpose is to provide an alternative initialization framework while maintain
 This repository contains configuration files, initialization scripts, and supporting utilities designed to integrate OpenRC seamlessly into Fedora-based systems.
 It is intended for advanced users who understand the implications of replacing systemd and wish to explore or develop a fully OpenRC-driven Fedora system.
 
-For detailed setup and usage instructions, please read INSTRUCTIONS.txt included in this repository.
+For detailed setup and usage instructions, please read INSTRUCTIONS.txt and OPENRC.txt included in this repository.
 
 © 2025 Alamahant. All rights reserved.
