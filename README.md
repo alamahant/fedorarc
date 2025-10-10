@@ -41,16 +41,24 @@ fedorarc/
 
 ## Quick start / usage
 
-1. Clone repository (if not already present on the machine):
+1. Clone repository  in /root (if not already present on the machine):
 ```
-git clone <your-repo-url> fedorarc
-cd fedorarc
+git clone https://github.com/alamahant/fedorarc.git
+
+Copy the transformation script to /root
+
+cp fedorarc/scripts/deliver-us-from-evil.sh .
+
 ```
 
 2. Inspect the main script and run it as **root** only when you are ready:
 ```
-less scripts/deliver-us-from-evil.sh
-sudo bash scripts/deliver-us-from-evil.sh
+less deliver-us-from-evil.sh
+
+Run the script
+
+./deliver-us-from-evil.sh
+
 ```
 
 3. The script will:
