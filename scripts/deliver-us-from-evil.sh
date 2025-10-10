@@ -237,6 +237,8 @@ perform_tasks() {
     rc-update add udev sysinit
     rc-update add udev-trigger sysinit
 
+    rc-update add lvm boot
+
     echo "=== Tasks completed ==="
 }
 
