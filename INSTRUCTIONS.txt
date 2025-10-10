@@ -3,9 +3,12 @@ FedoraRC - OpenRC for Fedora
 This repository contains scripts and configurations to bootstrap Fedora
 with OpenRC + elogind + netifrc instead of systemd.
 
-How to Use
+How to Use:
 
-Clone repository in /root:
+First create a Fedora minimal VM or incus container.
+Then from within that VM:
+
+Clone the repository in /root folder:
 cd /root
 git clone https://github.com/alamahant/fedorarc.git
 
@@ -16,10 +19,10 @@ Run as root:
 chmod +x deliver-us-from-evil.sh
 ./deliver-us-from-evil.sh
 
-Script will install dependencies, build OpenRC components,
+The script will install dependencies, build OpenRC components,
 configure the system, and remove systemd runtime traces.
 
-Compatibility
+Compatibility:
 
 Tested on Fedora. May work on RHEL derivatives.
 
