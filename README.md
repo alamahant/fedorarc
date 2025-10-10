@@ -1,6 +1,6 @@
 FedoraRC - OpenRC for Fedora
 ---
-This repository contains scripts and configurations to bootstrap Fedora 
+This repository contains scripts and configurations to bootstrap Fedora
 with OpenRC + elogind + netifrc instead of systemd.
 
 Repository Structure
@@ -19,8 +19,8 @@ Run as root:
 ./deliver-us-from-evil.sh
 ---
 
-Script will install dependencies, build OpenRC components, configure the system, 
-and remove systemd runtime traces.
+Script will install dependencies, build OpenRC components,
+configure the system, and remove systemd runtime traces.
 
 Compatibility
 ---
