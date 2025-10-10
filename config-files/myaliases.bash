@@ -1,5 +1,6 @@
 alias mygrub="grub2-mkconfig -o /boot/grub2/grub.cfg"
+alias myinitramfs="dracut /boot/initramfs-$(ls /lib/modules | head -n1).img --kver $(ls /lib/modules | head -n1) --force"
+alias mykernel="dnf -y update && dnf -y reinstall kernel{,-core,-headers,-modules,-modules-core}"
 alias sr="su -"
 alias poweroff="openrc-shutdown -p now"
 alias reboot="openrc-shutdown -r now"
-alias rm="rm"
