@@ -4,133 +4,58 @@ FedoraRC is an experimental tool to run Fedora with OpenRC instead of systemd.
 
 Main script: scripts/deliver-us-from-evil.sh
 
-This repository contains scripts, OpenRC init scripts, and configuration snippets to bootstrap a Fedora system (and likely other RHEL-derived distributions) to run with OpenRC + elogind + netifrc instead of systemd.
+This repository contains scripts, OpenRC init scripts, and configuration snippets to bootstrap a Fedora system to run with OpenRC + elogind + netifrc instead of systemd.
 
-It focuses on making the conversion repeatable and (relatively) safe by leaving systemd packages installed for DNF compatibility while removing runtime/system traces.
+It focuses on making the conversion repeatable and safe by leaving systemd packages installed for DNF compatibility while removing runtime traces.
 
-Repo layout
-
+Repo layout:
 fedorarc/
 
-conf.d
-config-files
-grub
-init.d
-LICENSE
-README.md
-rules.d
-scripts
-tmpfiles
+    conf.d
 
-    scripts/ - installer and helper scripts. Main entrypoint:
+    config-files
 
-        scripts/deliver-us-from-evil.sh - primary automation script (tested on Fedora; may work on RHEL derivatives).
+    grub
 
-    init.d/ - OpenRC init scripts (will be enriched over time).
+    init.d
 
-    conf.d/ - service configuration fragments.
+    LICENSE
 
-    tmpfiles/ and rules.d/ - tmpfiles and udev rules used during setup.
+    README.md
 
-    grub/ - grub assets and templates used by the installer.
+    rules.d
 
-    config-files/ - config snippets (e.g., /etc/default/grub, dracut conf, dnf config).
+    scripts
 
-    LICENSE - repository license.
+    tmpfiles
 
-Quick start / usage
+scripts/ contains installer and helper scripts. Main script is scripts/deliver-us-from-evil.sh
+init.d/ contains OpenRC init scripts
+conf.d/ contains service configuration fragments
+tmpfiles/ and rules.d/ contain tmpfiles and udev rules
+grub/ contains grub assets and templates
+config-files/ contains config snippets
+
+Quick start:
 
     Clone repository in /root:
+    git clone https://github.com/alamahant/fedorarc.git
 
-git clone https://github.com/alamahant/fedorarc.git
-
-Copy the transformation script to /root:
-
+Copy the script:
 cp fedorarc/scripts/deliver-us-from-evil.sh .
 
-    Inspect the main script and run it as root when ready:
+    Inspect and run as root:
+    ./deliver-us-from-evil.sh
 
-less deliver-us-from-evil.sh
+    The script will install dependencies, build OpenRC components, configure the system, and remove systemd runtime traces.
 
-Run the script:
+Tested on Fedora, may work on RHEL derivatives.
 
-./deliver-us-from-evil.sh
+OpenRC commands:
+rc-status - check service status
+rc-service sshd start - start service
+rc-update add sshd default - enable service at boot
 
-    The script will:
+After installation, edit /etc/default/grub and regenerate grub config.
 
-    install build dependencies
-
-    build & install OpenRC, elogind and netifrc
-
-    optionally build dracut and create initramfs
-
-    copy provided files into /etc, /usr/lib/tmpfiles.d, /usr/lib/udev/rules.d, etc.
-
-    wipe systemd runtime traces while preserving .so libs for package compatibility
-
-    configure OpenRC services and helper scripts
-
-Important: the installer detects container environments and skips bootloader/bootconfig tasks inside containers.
-
-Tested platforms
-
-    Tested: Fedora
-
-    Likely works on: RHEL and derivatives (CentOS Stream, AlmaLinux, Rocky, etc.) - differences in package names, paths, dracut/grub tooling may exist. Inspect the script before running on production machines.
-
-Notes & future work
-
-    conf.d and init.d directories will be enriched over time - more OpenRC scripts and config fragments will be added.
-
-    The repository does not uninstall systemd packages - it removes runtime traces and replaces init with OpenRC while keeping library compatibility.
-
-    The main script will copy fedorarc/config-files/* into relevant system locations. Review before running.
-
-OpenRC quick reference
-
-check status of all services
-
-rc-status
-
-start / stop / restart a service
-
-rc-service sshd start
-rc-service sshd stop
-rc-service sshd restart
-
-enable a service at boot
-
-rc-update add sshd default
-
-disable a service at boot
-
-rc-update del sshd default
-
-list services in a runlevel
-
-ls /etc/runlevels/default
-
-wrapper helpers installed to /usr/local/bin
-
-rc start|stop|restart|reload|status svc1 svc2 ...
-
-rcenable svc1 svc2
-rcdisable svc1 svc2
-
-Bootloader / GRUB
-
-After the script runs (non-container machine) you must:
-
-    Edit /etc/default/grub to set your root= and rootfstype= values.
-
-    Regenerate grub config:
-
-grub2-mkconfig -o /boot/grub2/grub.cfg --force
-
-or use whatever distro-specific grub command is required.
-
-Contributing & safety
-
-    Experimental project. Test in VMs first.
-
-    Inspect fedorarc/ before running on machines with important data.
+Warning: Experimental project. Test in VMs first.
