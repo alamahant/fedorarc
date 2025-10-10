@@ -11,15 +11,16 @@ It focuses on making the conversion repeatable and (relatively) safe by leaving 
 Repo layout
 
 fedorarc/
-├── conf.d
-├── config-files
-├── grub
-├── init.d
-├── LICENSE
-├── README.md
-├── rules.d
-├── scripts
-└── tmpfiles
+
+conf.d
+config-files
+grub
+init.d
+LICENSE
+README.md
+rules.d
+scripts
+tmpfiles
 
     scripts/ - installer and helper scripts. Main entrypoint:
 
