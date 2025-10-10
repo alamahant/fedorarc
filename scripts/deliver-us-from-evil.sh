@@ -115,13 +115,14 @@ wipe_systemd() {
 copy_needed_files() {
     echo "[*] Extracting needed files..."
     cd ~
+if [ ! -d fedorarc ];then
     if [ -f fedorarc.tar.gz ]; then
         tar -xf fedorarc.tar.gz
     else
-        echo "[!] fedorarc.tar.gz not found in $BUILD_DIR"
+        echo "[!] cloned fedorarc or fedorarc.tar.gz not found in $BUILD_DIR"
         return 1
     fi
-
+fi
     echo "[*] Copying init.d scripts..."
     cp -av fedorarc/init.d/* /etc/init.d/ 2>/dev/null || true
 
