@@ -87,27 +87,34 @@ Notes & future work
 
 OpenRC quick reference
 
-# check status of all services
+check status of all services
+
 rc-status
 
-# start / stop / restart a service
+start / stop / restart a service
+
 rc-service sshd start
 rc-service sshd stop
 rc-service sshd restart
 
-# enable a service at boot
+enable a service at boot
+
 rc-update add sshd default
 
-# disable a service at boot
+disable a service at boot
+
 rc-update del sshd default
 
-# list services in a runlevel
+list services in a runlevel
+
 ls /etc/runlevels/default
 
-# wrapper helpers installed to /usr/local/bin
+wrapper helpers installed to /usr/local/bin
+
 rc start|stop|restart|reload|status svc1 svc2 ...
-rcenable svc1 svc2 @default
-rcdisable svc1 svc2 @default
+
+rcenable svc1 svc2 
+rcdisable svc1 svc2 
 
 ---
 
