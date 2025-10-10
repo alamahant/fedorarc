@@ -13,7 +13,7 @@ replacing systemd and want to explore a fully OpenRC-based
 environment.
 
 More OpenRC service scripts and config files will be added
-over time to   init.d   and   conf.d   to support daemons
+over time to   INIT.D   and   CONF.D   to support daemons
 installed with DNF. If a daemon or configuration is missing,
 please open an issue so it can be added in future updates.
 
