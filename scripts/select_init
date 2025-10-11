@@ -17,7 +17,7 @@ show_status() {
 switch_openrc() {
     echo "[*] Switching to OpenRC configuration..."
     ln -sf /usr/sbin/openrc-init /sbin/init
-
+    mv /lib/systemd/systemd /lib/systemd/no-systemd || true
     ln -sf /etc/dnf/dnf-openrc /etc/dnf/dnf.conf
     ln -sf /etc/default/grub-openrc /etc/default/grub
     ln -sf /etc/dracut.conf.d/dracut-openrc.conf /etc/dracut.conf.d/fedora.conf
@@ -41,7 +41,7 @@ switch_openrc() {
 switch_systemd() {
     echo "[*] Switching to systemd configuration..."
     if [ -f /lib/systemd/no-systemd ]; then
-        mv /lib/systemd/no-systemd /lib/systemd/systemd
+    mv /lib/systemd/no-systemd /lib/systemd/systemd 
     fi
 
     ln -sf /lib/systemd/systemd /sbin/init
