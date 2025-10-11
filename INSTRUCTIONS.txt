@@ -7,6 +7,8 @@ How to Use
 
 First create a Fedora minimal VM or Incus container.
 Then, from within that VM:
+First disable Selinux in /etc/selinux/config and either stop firewalld or open port 22 for ssh.
+Especially for selinux it is ESSENTIAL that you keep it disabled or permissive until a policy solution is set.
 
 Clone the repository in /root folder:
 cd /root
