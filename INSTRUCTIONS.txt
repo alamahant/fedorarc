@@ -3,12 +3,14 @@ FedoraRC - OpenRC for Fedora
 This repository contains scripts and configurations to bootstrap Fedora
 with OpenRC + elogind + netifrc instead of systemd.
 
-How to Use
+How to Use:
 
 First create a Fedora minimal VM or Incus container.
-Then, from within that VM:
-First disable Selinux in /etc/selinux/config and either stop firewalld or open port 22 for ssh.
+
+Disable Selinux in /etc/selinux/config and either stop firewalld or open port 22 for ssh.
 Especially for selinux it is ESSENTIAL that you keep it disabled or permissive until a policy solution is set.
+
+Then, from within that VM:
 
 Clone the repository in /root folder:
 cd /root
@@ -24,7 +26,7 @@ chmod +x deliver-us-from-evil.sh
 The script will install dependencies, build OpenRC components,
 configure the system, and remove systemd runtime traces.
 
-After Installation
+After Installation:
 
 If you install a package with a daemon using DNF,
 look in init.d/services/.
@@ -38,12 +40,12 @@ If you encounter any problems, please open an issue.
 Also open an issue if your desired daemon and configuration
 are missing from the existing files.
 
-Compatibility
+Compatibility:
 
 Tested on Fedora.
 May also work on RHEL derivatives.
 
-Warning
+Warning:
 
 This project is experimental.
 Always test in virtual machines or incus containers before committing to bare metal.
