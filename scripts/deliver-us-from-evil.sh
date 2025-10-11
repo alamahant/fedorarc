@@ -349,6 +349,9 @@ configure_boot() {
 # ---------------------------
 # Main execution
 # ---------------------------
+sed -i 's/=Enforcing/=disabled/g' /etc/selinux/config
+setenforce 0
+
 download_packages
 build_openrc
 build_elogind
