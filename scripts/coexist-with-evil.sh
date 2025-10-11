@@ -138,16 +138,32 @@ fi
     cp -av fedorarc/conf.d/* /etc/conf.d/ 2>/dev/null || true
 
     echo "[*] Copying tmpfiles.d rules..."
-    rm -rf /usr/lib/tmpfiles.d/
+    rm -rf /usr/lib/tmpfiles.d/ || true
+    rm -rf /usr/lib/tmpfiles-openrc/ || true
+    rm -rf /usr/lib/tmpfiles-systemd/ || true
     cp -av fedorarc/tmpfiles-systemd /usr/lib/ 2>/dev/null || true
     cp -av fedorarc/tmpfiles-openrc /usr/lib/ 2>/dev/null || true
-    ln -sf /usr/lib/tempfiles-openrc /usr/lib/tempfiles.d
+    sleep 1
+    ln -s /usr/lib/tmpfiles-openrc/ /usr/lib/tmpfiles.d
+
+    if [ ! -L "/usr/lib/tmpfiles.d" ]; then
+        echo "ERROR: Failed to create tmpfiles.d symlink"
+        
+    fi
 
     echo "[*] Copying udev rules..."
-    rm -rf /usr/lib/udev/rules.d
+    rm -rf /usr/lib/udev/rules.d || true
+    rm -rf /usr/lib/udev/systemd-rules || true
+    rm -rf /usr/lib/udev/openrc-rules || true
     cp -av fedorarc/systemd-rules /usr/lib/udev/ 2>/dev/null || true
     cp -av fedorarc/openrc-rules /usr/lib/udev/ 2>/dev/null || true
-    ln -sf /usr/lib/udev/openrc-rules  /usr/lib/udev/rules.d
+    sleep 1
+    ln -s /usr/lib/udev/openrc-rules/  /usr/lib/udev/rules.d
+
+    if [ ! -L "/usr/lib/udev/rules.d" ]; then
+      echo "ERROR: Failed to create udev rules.d symlink"
+      
+    fi
 
     echo "[*] Copying user scripts..."
     cp -av fedorarc/scripts/rc* /usr/local/bin/ 2>/dev/null || true
@@ -186,7 +202,7 @@ EOF
     cp -av fedorarc/config-files/dracut-systemd.conf /etc/dracut.conf.d/ 2>/dev/null || true
     ln -sf /etc/dracut.conf.d/dracut-openrc.conf /etc/dracut.conf.d/fedora.conf
 
-    mv /lib/systemd/systemd /lib/systemd/no-systemd
+    mv /lib/systemd/systemd /lib/systemd/no-systemd || true 
     ln -sf /usr/sbin/openrc-init /sbin/init
 
     echo "[*] Needed files installed."

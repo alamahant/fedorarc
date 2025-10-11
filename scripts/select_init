@@ -22,8 +22,12 @@ switch_openrc() {
     ln -sf /etc/default/grub-openrc /etc/default/grub
     ln -sf /etc/dracut.conf.d/dracut-openrc.conf /etc/dracut.conf.d/fedora.conf
 
-    ln -sf /usr/lib/tmpfiles-openrc /usr/lib/tmpfiles.d
-    ln -sf /usr/lib/udev/openrc-rules /usr/lib/udev/rules.d
+    rm -f /usr/lib/tmpfiles.d
+    ln -s /usr/lib/tmpfiles-openrc/ /usr/lib/tmpfiles.d
+
+    rm /usr/lib/udev/rules.d
+    ln -s /usr/lib/udev/openrc-rules/ /usr/lib/udev/rules.d
+
     update_boot
 
 
@@ -46,8 +50,12 @@ switch_systemd() {
     ln -sf /etc/default/grub-systemd /etc/default/grub
     ln -sf /etc/dracut.conf.d/dracut-systemd.conf /etc/dracut.conf.d/fedora.conf
 
-    ln -sf /usr/lib/tmpfiles-systemd /usr/lib/tmpfiles.d
-    ln -sf /usr/lib/udev/systemd-rules /usr/lib/udev/rules.d
+    rm -f /usr/lib/tmpfiles.d
+    ln -s /usr/lib/tmpfiles-systemd/ /usr/lib/tmpfiles.d
+
+    rm /usr/lib/udev/rules.d
+    ln -s /usr/lib/udev/systemd-rules/ /usr/lib/udev/rules.d
+
     update_boot
 
     sed -i 's/alias poweroff/#alias poweroff/g' /etc/bash/bashrc.d/myaliases.bash
