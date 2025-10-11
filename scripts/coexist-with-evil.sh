@@ -369,6 +369,7 @@ configure_boot() {
 # Main execution
 # ---------------------------
 sed -i 's/=Enforcing/=disabled/g' /etc/selinux/config
+sed -i 's/=enforcing/=disabled/g' /etc/selinux/config
 setenforce 0
 
 download_packages
