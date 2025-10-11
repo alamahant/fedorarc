@@ -20,7 +20,7 @@ switch_openrc() {
     mv /lib/systemd/systemd /lib/systemd/no-systemd || true
     ln -sf /etc/dnf/dnf-openrc /etc/dnf/dnf.conf
     ln -sf /etc/default/grub-openrc /etc/default/grub
-    ln -sf /etc/dracut.conf.d/dracut-openrc.conf /etc/dracut.conf.d/fedora.conf
+    ln -sf /etc/dracut.conf.d/dracut-openrc /etc/dracut.conf.d/fedora.conf
 
     rm -f /usr/lib/tmpfiles.d
     ln -s /usr/lib/tmpfiles-openrc/ /usr/lib/tmpfiles.d
@@ -48,7 +48,7 @@ switch_systemd() {
 
     ln -sf /etc/dnf/dnf-systemd /etc/dnf/dnf.conf
     ln -sf /etc/default/grub-systemd /etc/default/grub
-    ln -sf /etc/dracut.conf.d/dracut-systemd.conf /etc/dracut.conf.d/fedora.conf
+    ln -sf /etc/dracut.conf.d/dracut-systemd /etc/dracut.conf.d/fedora.conf
 
     rm -f /usr/lib/tmpfiles.d
     ln -s /usr/lib/tmpfiles-systemd/ /usr/lib/tmpfiles.d
