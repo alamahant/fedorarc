@@ -27,7 +27,7 @@ download_packages() {
         libselinux-devel gperf python3-jinja2 asciidoc kmod-devel \
         xfsprogs btrfs-progs e2fsprogs lvm2
 
-    dnf install -y cronie rsyslog dhcpcd nano vim
+    dnf install -y cronie rsyslog dhcpcd nano vim grub2-efi-x64-modules
 }
 
 # ---------------------------
