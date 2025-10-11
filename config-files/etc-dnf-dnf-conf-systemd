@@ -1,0 +1,7 @@
+# see `man dnf.conf` for defaults and possible options
+
+[main]
+tsflags=nodocs
+timeout=60
+fastestmirror=True
+exclude=kernel* dnf5

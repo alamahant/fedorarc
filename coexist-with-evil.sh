@@ -1,0 +1,1 @@
+scripts/coexist-with-evil.sh
