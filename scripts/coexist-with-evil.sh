@@ -406,4 +406,4 @@ echo "    select_init openrc"
 echo "    select_init systemd"
 echo "    select_init status"
 echo
-echo "============================ PlZ RUN source /etc/bashrc ========================================="
+echo "============================ PlZ RUN source /etc/bashrc AND JUST THIS TIME WHEN POWERING OFF YOU MIGHT NEED TO PRESS CTRL+ALT+DELETE IN CASE THE SHUTDOWN GOT STUCK ========================================="
