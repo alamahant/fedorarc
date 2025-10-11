@@ -315,27 +315,8 @@ configure_boot() {
         echo "exclude=kernel*" >> /etc/dnf/dnf.conf
     fi
 
-    # Check if dracut is installed
-    #if command -v dracut >/dev/null 2>&1; then
-    if  [[ "$DUAL_BOOT" != "true" ]]; then
-        echo "Building dracut from source..."
 
-        cd $BUILD_DIR || exit 1
-        rm -rf dracut
-        dnf remove -y --no-autoremove dracut
-
-        # Clone the dracut repo
-
-        git clone https://github.com/dracutdevs/dracut.git
-        cd dracut || exit 1
-
-        # Simple configure and make
-        ./configure --prefix=/usr
-        make
-        make install
-
-	[[ "$?" -eq 0 ]] && echo "COMPLETED DRACUT INSTALLATION"
-    fi
+    
     # Generate initramfs if none exists
     KERNEL_VERSION=$(ls /lib/modules | head -n1)
 
