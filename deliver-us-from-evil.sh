@@ -24,7 +24,8 @@ download_packages() {
     dnf install -y \
         libudev-devel \
         systemd-devel libcap-devel pam-devel \
-        libselinux-devel gperf python3-jinja2 asciidoc kmod-devel
+        libselinux-devel gperf python3-jinja2 asciidoc kmod-devel \
+        xfsprogs btrfs-progs e2fsprogs lvm2
 
     dnf install -y cronie rsyslog dhcpcd nano vim
 }
@@ -161,7 +162,7 @@ for _ in /etc/bash/bashrc.d/*; do
 done
 EOF
 
-    source /etc/bashrc
+
 
     echo "[*] Copying other files..."
     cp -av fedorarc/config-files/etc-dnf-dnf-conf /etc/dnf/dnf.conf 2>/dev/null || true
@@ -244,6 +245,7 @@ perform_tasks() {
     rc-update add udev-trigger sysinit
 
     rc-update add lvm boot
+    rc-update add sshd default
 
     echo "=== Tasks completed ==="
 }
@@ -375,4 +377,4 @@ echo "Also, helper scripts were added in /usr/local/bin:"
 echo "    rc start|stop|restart|reload|status service1 service2 ..."
 echo "    rcenable service1 service2"
 echo "    rcdisable service1 service2"
-echo "====================================================================="
+echo "============================ PlZ RUN source /etc/bashrc ========================================="
