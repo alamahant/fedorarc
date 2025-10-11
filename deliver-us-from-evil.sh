@@ -1,1 +1,1 @@
-/home/dharma/GithubRepositories/fedorarc/scripts/deliver-us-from-evil.sh
+scripts/deliver-us-from-evil.sh
