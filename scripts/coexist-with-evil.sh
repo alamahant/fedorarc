@@ -198,9 +198,9 @@ EOF
     ln -sf /etc/default/grub-openrc /etc/default/grub
 
     mkdir /etc/dracut.conf.d || true
-    cp -av fedorarc/config-files/dracut-openrc.conf /etc/dracut.conf.d/ 2>/dev/null || true
-    cp -av fedorarc/config-files/dracut-systemd.conf /etc/dracut.conf.d/ 2>/dev/null || true
-    ln -sf /etc/dracut.conf.d/dracut-openrc.conf /etc/dracut.conf.d/fedora.conf
+    cp -av fedorarc/config-files/dracut-openrc.conf /etc/dracut.conf.d/dracut-openrc 2>/dev/null || true
+    cp -av fedorarc/config-files/dracut-systemd.conf /etc/dracut.conf.d/dracut-systemd 2>/dev/null || true
+    ln -sf /etc/dracut.conf.d/dracut-openrc /etc/dracut.conf.d/fedora.conf
 
     mv /lib/systemd/systemd /lib/systemd/no-systemd || true 
     ln -sf /usr/sbin/openrc-init /sbin/init
