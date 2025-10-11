@@ -66,8 +66,9 @@ echo "IMPORTANT: PLEASE RUN source /etc/profile AND 'openrc-shutdown -p/-r now' 
 }
 
 update_boot() {
-grub2-mkconfig -o /boot/grub2/grub.cfg
+
 dracut /boot/initramfs-$(ls /lib/modules | head -n1).img --kver $(ls /lib/modules | head -n1) --force
+grub2-mkconfig -o /boot/grub2/grub.cfg
 }
 
 case "$1" in
