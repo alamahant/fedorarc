@@ -378,7 +378,7 @@ echo "    grub2-mkconfig -o /boot/grub2/grub.cfg --force"
 echo "or simply use the alias: mygrub"
 echo
 echo "Also, helper scripts were added in /usr/local/bin:"
-echo "    rcs start|stop|restart|reload|status service1 service2 ..."
+echo "    rc start|stop|restart|reload|status service1 service2 ..."
 echo "    rcenable service1 service2"
 echo "    rcdisable service1 service2"
 echo "======== PlZ RUN source /etc/bashrc AND JUST THIS TIME WHEN POWERING OFF YOU MIGHT NEED TO PRESS CTRL+ALT+DELETE IN CASE THE SHUTDOWN GOT STUCK========================================="
