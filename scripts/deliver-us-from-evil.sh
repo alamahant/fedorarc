@@ -180,7 +180,7 @@ EOF
 reset_udev() {
     if grep -q 'container=' /proc/1/environ 2>/dev/null; then
         echo "Container detected"
-        exit 0
+        return 0
     fi
 
     cd ~
