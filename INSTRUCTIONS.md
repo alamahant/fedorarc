@@ -40,20 +40,16 @@ instead of:
 
 🎯 Init System Selector
 
-For dual boot systems, we provide an easy init system selector!
 
 After running coexist-with-evil.sh, a convenient script is installed at:
-text
+
 
 /usr/local/bin/select_init
 
 Usage:
 
-
 # Run the init selector
-select_init
 
-# Or use it directly with your choice
 select_init openrc
 select_init systemd
 
