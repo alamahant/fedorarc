@@ -138,9 +138,8 @@ fi
     cp -av fedorarc/conf.d/* /etc/conf.d/ 2>/dev/null || true
 
     echo "[*] Copying tmpfiles.d rules..."
-    rm -rf /usr/lib/tmpfiles.d/ || true
-    rm -rf /usr/lib/tmpfiles-openrc/ || true
-    rm -rf /usr/lib/tmpfiles-systemd/ || true
+    rm -rf /usr/lib/tmpfiles* || true
+    
     cp -av fedorarc/tmpfiles-systemd /usr/lib/ 2>/dev/null || true
     cp -av fedorarc/tmpfiles-openrc /usr/lib/ 2>/dev/null || true
     sleep 1
@@ -152,13 +151,12 @@ fi
     fi
 
     echo "[*] Copying udev rules..."
-    rm -rf /usr/lib/udev/rules.d || true
-    rm -rf /usr/lib/udev/systemd-rules || true
-    rm -rf /usr/lib/udev/openrc-rules || true
-    cp -av fedorarc/systemd-rules /usr/lib/udev/ 2>/dev/null || true
-    cp -av fedorarc/openrc-rules /usr/lib/udev/ 2>/dev/null || true
+    rm -rf /usr/lib/udev/rules* || true
+    
+    cp -av fedorarc/rules-systemd /usr/lib/udev/ 2>/dev/null || true
+    cp -av fedorarc/rules-openrc /usr/lib/udev/ 2>/dev/null || true
     sleep 1
-    ln -s /usr/lib/udev/openrc-rules/  /usr/lib/udev/rules.d
+    ln -s /usr/lib/udev/rules-openrc/  /usr/lib/udev/rules.d
 
     if [ ! -L "/usr/lib/udev/rules.d" ]; then
       echo "ERROR: Failed to create udev rules.d symlink"
@@ -215,7 +213,7 @@ reset_udev() {
     return 0
     if grep -q 'container=' /proc/1/environ 2>/dev/null; then
         echo "Container detected"
-        exit 0
+        return 0
     fi
 
     cd ~
