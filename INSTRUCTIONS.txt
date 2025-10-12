@@ -28,8 +28,6 @@ configure the system, and remove systemd runtime traces.
 
 DUAL BOOT OPTION:
 
-IMPORTANT UPDATE:
-
 A new script named coexist-with-evil.sh was added to enable dual boot between OpenRC and systemd.
 
 If you wish to explore this scenario then please use:
