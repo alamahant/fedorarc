@@ -3,7 +3,7 @@ set -e
 
 DUAL_BOOT="true"
 BUILD_DIR="/root/builds"
-mkdir $BUILD_DIR || true
+[ ! -d $BUILD_DIR ] && mkdir $BUILD_DIR 
 
 # ---------------------------
 # Download and install packages
@@ -367,8 +367,8 @@ configure_boot() {
 # ---------------------------
 # Main execution
 # ---------------------------
-sed -i 's/=Enforcing/=disabled/g' /etc/selinux/config
-sed -i 's/=enforcing/=disabled/g' /etc/selinux/config
+sed -i 's/=Enforcing/=disabled/g' /etc/selinux/config || true
+sed -i 's/=enforcing/=disabled/g' /etc/selinux/config || true
 setenforce 0 || true
 
 download_packages
