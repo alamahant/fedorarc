@@ -318,9 +318,11 @@ configure_boot() {
 
     
     # Generate initramfs if none exists
+    dnf -y remove dracut
+    dnf -y install dracut
     KERNEL_VERSION=$(ls /lib/modules | head -n1)
 
-    dracut --force /boot/initramfs-"$KERNEL_VERSION".img --kver "$KERNEL_VERSION"
+    dracut -f -v  /boot/initramfs-"$KERNEL_VERSION".img --kver "$KERNEL_VERSION"
 
     # Check if GRUB is installed
     if ! command -v grub2-install >/dev/null 2>&1; then
@@ -393,13 +395,14 @@ echo
 echo "Then regenerate grub config with:"
 echo "    grub2-mkconfig -o /boot/grub2/grub.cfg --force"
 echo "or simply use the alias: mygrub"
+echo "      This is ESSENTIAL!"
 echo
 echo "Also, helper scripts were added in /usr/local/bin:"
 echo "    rc start|stop|restart|reload|status service1 service2 ..."
 echo "    rcenable service1 service2"
 echo "    rcdisable service1 service2"
 echo
-echo "To switch between OpenRC and systemd symlink setups (no reboot required):"
+echo "IMPORTANT: To switch between OpenRC and systemd symlink setups (no reboot required):"
 echo "    select_init openrc"
 echo "    select_init systemd"
 echo "    select_init status"

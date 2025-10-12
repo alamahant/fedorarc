@@ -66,8 +66,9 @@ echo "IMPORTANT: PLEASE RUN source /etc/profile AND 'openrc-shutdown -p/-r now' 
 }
 
 update_boot() {
-
-dracut /boot/initramfs-$(ls /lib/modules | head -n1).img --kver $(ls /lib/modules | head -n1) --force
+dnf -y remove dracut --no-autoremove
+dnf -y install dracut
+dracut -f -v /boot/initramfs-$(ls /lib/modules | head -n1).img --kver $(ls /lib/modules | head -n1) 
 grub2-mkconfig -o /boot/grub2/grub.cfg
 }
 

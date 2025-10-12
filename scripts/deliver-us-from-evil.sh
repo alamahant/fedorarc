@@ -287,7 +287,8 @@ configure_boot() {
 
         cd $BUILD_DIR || exit 1
         rm -rf dracut
-        dnf remove -y --no-autoremove dracut
+        dnf -y remove dracut --no-autoremove
+        
 
         # Clone the dracut repo
 
@@ -304,7 +305,7 @@ configure_boot() {
     # Generate initramfs if none exists
     KERNEL_VERSION=$(ls /lib/modules | head -n1)
 
-    dracut --force /boot/initramfs-"$KERNEL_VERSION".img --kver "$KERNEL_VERSION"
+    dracut -f -v  /boot/initramfs-"$KERNEL_VERSION".img --kver "$KERNEL_VERSION"
 
     # Check if GRUB is installed
     if ! command -v grub2-install >/dev/null 2>&1; then
