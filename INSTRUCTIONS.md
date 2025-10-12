@@ -1,7 +1,8 @@
 FedoraRC - OpenRC for Fedora
 
 This repository contains scripts and configurations to bootstrap Fedora with OpenRC + elogind + netifrc instead of systemd.
-🚀 How to Use
+
+HOW TO USE:
 
 First create a Fedora minimal VM or Incus container.
 
@@ -10,46 +11,40 @@ Especially for SELinux, it is ESSENTIAL that you keep it disabled or permissive 
 
 Then, from within that VM:
 
-
-# Clone the repository in /root folder
+Clone the repository in /root folder:
 cd /root
 git clone https://github.com/alamahant/fedorarc.git
 
-# Copy the transformation script to /root
+Copy the transformation script to /root:
 cp fedorarc/scripts/deliver-us-from-evil.sh /root/
 
-# Run as root
+Run as root:
 chmod +x deliver-us-from-evil.sh
 ./deliver-us-from-evil.sh
 
 The script will install dependencies, build OpenRC components, configure the system, and remove systemd runtime traces.
-🔄 Dual Boot Option
-IMPORTANT UPDATE
+
+DUAL BOOT OPTION:
+
+IMPORTANT UPDATE:
 
 A new script named coexist-with-evil.sh was added to enable dual boot between OpenRC and systemd.
 
-If you wish to explore this scenario, please use:
-
-
+If you wish to explore this scenario then please use:
 ./coexist-with-evil.sh
 
 instead of:
-
-
 ./deliver-us-from-evil.sh
 
-🎯 Init System Selector
+INIT SYSTEM SELECTOR:
 
-
-After running coexist-with-evil.sh, a convenient script is installed at:
-
-
-/usr/local/bin/select_init
+For dual boot systems, there is an init system selector script placed at /usr/local/bin/select_init that easily lets you select your desired init system for next boot.
 
 Usage:
+select_init
+(interactive menu)
 
-# Run the init selector
-
+Or directly:
 select_init openrc
 select_init systemd
 
@@ -63,26 +58,26 @@ Features:
 
     Perfect for testing and development environments
 
-📦 After Installation
+AFTER INSTALLATION:
 
 If you install a package with a daemon using DNF:
 
-    Look in init.d/services/ - if its script is found there, move it to init.d/
+    Look in init.d/services/. If its script is found there, move it to init.d/.
 
-    Check conf.d/config/ - if its configuration file is found there, move it to conf.d/
+    Check conf.d/config/ for its configuration file. If found, move it to conf.d/.
 
-    Test the service
+    Then test the service.
 
 If you encounter any problems, please open an issue. Also open an issue if your desired daemon and configuration are missing from the existing files.
-🔧 Compatibility
 
-    ✅ Tested on Fedora
+COMPATIBILITY:
 
-    ⚠️ May also work on RHEL derivatives
+Tested on Fedora.
+May also work on RHEL derivatives.
 
-⚠️ Warning
+WARNING:
 
 This project is experimental.
-Always test in virtual machines or Incus containers before committing to bare metal.
+Always test in virtual machines or incus containers before committing to bare metal.
 
 © 2025 Alamahant. All rights reserved.
