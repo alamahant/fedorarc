@@ -9,7 +9,7 @@ Disable Selinux in /etc/selinux/config and either stop firewalld or open port 22
 Especially for SELinux, it is ESSENTIAL that you keep it disabled or permissive until a policy solution is set.
 
 Then, from within that VM:
-bash
+
 
 # Clone the repository in /root folder
 cd /root
@@ -29,12 +29,12 @@ IMPORTANT UPDATE
 A new script named coexist-with-evil.sh was added to enable dual boot between OpenRC and systemd.
 
 If you wish to explore this scenario, please use:
-bash
+
 
 ./coexist-with-evil.sh
 
 instead of:
-bash
+
 
 ./deliver-us-from-evil.sh
 
@@ -48,7 +48,7 @@ text
 /usr/local/bin/select_init
 
 Usage:
-bash
+
 
 # Run the init selector
 select_init
