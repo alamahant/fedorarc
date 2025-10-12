@@ -1,6 +1,7 @@
 FedoraRC - OpenRC for Fedora
 
-This repository contains scripts and configurations to bootstrap Fedora with OpenRC + elogind + netifrc instead of systemd.
+This repository contains scripts and configurations to bootstrap Fedora
+with OpenRC + elogind + netifrc instead of systemd.
 
 HOW TO USE:
 
@@ -22,7 +23,8 @@ Run as root:
 chmod +x deliver-us-from-evil.sh
 ./deliver-us-from-evil.sh
 
-The script will install dependencies, build OpenRC components, configure the system, and remove systemd runtime traces.
+The script will install dependencies, build OpenRC components,
+configure the system, and remove systemd runtime traces.
 
 DUAL BOOT OPTION:
 
@@ -38,13 +40,12 @@ instead of:
 
 INIT SYSTEM SELECTOR:
 
-For dual boot systems, there is an init system selector script placed at /usr/local/bin/select_init that easily lets you select your desired init system for next boot.
+For dual boot systems, there is an init system selector script placed at
+/usr/local/bin/select_init 
+that easily lets you select your desired init system for next boot.
 
 Usage:
-select_init
-(interactive menu)
 
-Or directly:
 select_init openrc
 select_init systemd
 
@@ -68,7 +69,8 @@ If you install a package with a daemon using DNF:
 
     Then test the service.
 
-If you encounter any problems, please open an issue. Also open an issue if your desired daemon and configuration are missing from the existing files.
+If you encounter any problems, please open an issue.
+Also open an issue if your desired daemon and configuration are missing from the existing files.
 
 COMPATIBILITY:
 
