@@ -369,7 +369,7 @@ configure_boot() {
 # ---------------------------
 sed -i 's/=Enforcing/=disabled/g' /etc/selinux/config
 sed -i 's/=enforcing/=disabled/g' /etc/selinux/config
-setenforce 0
+setenforce 0 || true
 
 download_packages
 build_openrc
