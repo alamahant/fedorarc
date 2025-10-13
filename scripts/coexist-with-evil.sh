@@ -3,7 +3,7 @@ set -e
 
 DUAL_BOOT="true"
 BUILD_DIR="/root/builds"
-[ ! -d $BUILD_DIR ] && mkdir $BUILD_DIR 
+mkdir -p $BUILD_DIR 
 
 # ---------------------------
 # Download and install packages
