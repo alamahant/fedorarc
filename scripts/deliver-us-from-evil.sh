@@ -168,7 +168,7 @@ EOF
     cp -av fedorarc/config-files/etc-dnf-dnf-conf /etc/dnf/dnf.conf 2>/dev/null || true
     cp -av fedorarc/config-files/etc-default-grub /etc/default/grub 2>/dev/null || true
 
-    mkdir /etc/dracut.conf.d || true
+    mkdir -p /etc/dracut.conf.d 
     cp -av fedorarc/config-files/dracut-fedorarc.conf /etc/dracut.conf.d/fedorarc.conf 2>/dev/null || true
 
     echo "[*] Needed files installed."
