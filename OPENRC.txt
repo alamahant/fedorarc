@@ -156,4 +156,6 @@ rcenable / rcdisable - convenience wrappers for managing runlevels
 
 SUMMARY
 
-OpenRC is a fast, reliable, and simple init system designed around dependency management and shell scripts. It is compatible with traditional Unix tools and can coexist with other components such as elogind, udev, and modern desktop environments. FedoraRC uses OpenRC as its core init system, replacing systemd while maintaining compatibility for package management.
+OpenRC is a fast, reliable, and simple init system designed around dependency management and shell scripts. 
+It is compatible with traditional Unix tools and can coexist with other components such as elogind, udev, and modern desktop environments. 
+FedoraRC uses OpenRC as its core init system, replacing systemd while maintaining compatibility for package management.
