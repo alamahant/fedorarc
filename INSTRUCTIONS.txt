@@ -46,6 +46,7 @@ Usage:
 
 select_init openrc
 select_init systemd
+select_init status
 
 Features:
 
