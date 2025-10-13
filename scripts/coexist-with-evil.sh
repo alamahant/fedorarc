@@ -314,10 +314,31 @@ configure_boot() {
     fi
 
 
+
+if  echo 2>&1; then
+        echo "Building dracut from source..."
+
+        cd $BUILD_DIR || exit 1
+        rm -rf dracut
+        dnf -y remove dracut --no-autoremove
+        
+
+        # Clone the dracut repo
+
+        git clone https://github.com/dracutdevs/dracut.git
+        cd dracut || exit 1
+
+        # Simple configure and make
+        ./configure --prefix=/usr
+        make
+        make install
+
+	[[ "$?" -eq 0 ]] && echo "COMPLETED DRACUT INSTALLATION"
+    fi
+
     
     # Generate initramfs if none exists
-    dnf -y remove dracut
-    dnf -y install dracut
+    
     KERNEL_VERSION=$(ls /lib/modules | head -n1)
 
     dracut -f -v  /boot/initramfs-"$KERNEL_VERSION".img --kver "$KERNEL_VERSION"
