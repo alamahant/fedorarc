@@ -15,12 +15,12 @@ download_packages() {
     dnf install -y \
         git gcc make cmake meson ninja-build pkgconfig \
         wget curl tar bzip2 gzip xz \
-        vim nano less which \
+        vim nano  \
         iproute iputils net-tools \
         openssh-server openssh-clients \
         cronie rsyslog \
         dbus dbus-devel dbus-daemon polkit-devel \
-        sudo util-linux shadow zstd xz lz4 cpio
+        sudo util-linux shadow zstd  lz4 cpio
 
     dnf install -y \
         libudev-devel \
