@@ -210,7 +210,7 @@ EOF
 # Reset udev runtime and apply new rules
 # ---------------------------
 reset_udev() {
-    return 0
+    
     if grep -q 'container=' /proc/1/environ 2>/dev/null; then
         echo "Container detected"
         return 0
