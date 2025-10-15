@@ -227,13 +227,6 @@ reset_udev() {
 
     rm -rfv /run/udev/* /var/lib/udev/* /var/run/udev/* 2>/dev/null || true
 
-    # Apply new tmpfiles and rules
-    if [ -d "fedorarc/tmpfiles.d" ]; then
-        cp -av "fedorarc/tmpfiles.d/"* /usr/lib/tmpfiles.d/
-    fi
-    if [ -d "fedorarc/rules.d" ]; then
-        cp -av "fedorarc/rules.d/"* /usr/lib/udev/rules.d/
-    fi
 
     rc-service udev start || true
 
