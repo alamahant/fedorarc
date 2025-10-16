@@ -209,7 +209,7 @@ EOF
 # ---------------------------
 # Reset udev runtime and apply new rules
 # ---------------------------
-reset_udev() {
+reset_udev-deact() {
     
     if grep -q 'container=' /proc/1/environ 2>/dev/null; then
         echo "Container detected"
@@ -241,6 +241,41 @@ reset_udev() {
 
     echo "[*] udev reset complete and systemd tmp cleaned."
 }
+
+reset_udev() {
+systemctl stop udev || true
+rc-service udev stop || true
+
+# Remove the entire udev database and cache
+rm -rf /var/run/udev/
+rm -rf /run/udev/
+rm -f /etc/udev/hwdb.bin
+rm -f /lib/udev/hwdb.bin
+
+# Remove persistent rules and links
+rm -rf /dev/.udev/
+rm -f /etc/udev/rules.d/*.rules~
+
+# Recreate directories
+mkdir -p /var/run/udev
+mkdir -p /run/udev
+mkdir -p /dev/.udev
+
+# Reload hardware database
+udevadm hwdb --update
+
+# Trigger hardware re-scan
+udevadm trigger --type=subsystems --action=add
+udevadm trigger --type=devices --action=add
+
+# Settle udev events
+udevadm settle --timeout=30
+
+# Restart udev service
+rc-service udev start || true
+
+}
+
 
 # ---------------------------
 # Perform tasks
@@ -363,7 +398,7 @@ download_packages
 build_openrc
 build_elogind
 build_netifrc
-wipe_systemd
+#wipe_systemd
 copy_needed_files
 reset_udev
 perform_tasks

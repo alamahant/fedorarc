@@ -4,4 +4,4 @@
 tsflags=nodocs
 timeout=60
 fastestmirror=True
-exclude=kernel* dnf5
+exclude=kernel* dnf5 systemd*
