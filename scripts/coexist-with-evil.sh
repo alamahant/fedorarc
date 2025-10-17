@@ -243,7 +243,7 @@ reset_udev-deact() {
 }
 
 reset_udev() {
-systemctl stop udev || true
+systemctl stop systemd-udevd || true
 rc-service udev stop || true
 
 # Remove the entire udev database and cache
@@ -273,7 +273,7 @@ udevadm settle --timeout=30
 
 # Restart udev service
 rc-service udev start || true
-
+systemctl start systemd-udevd || true
 }
 
 

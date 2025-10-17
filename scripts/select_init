@@ -31,7 +31,7 @@ switch_openrc() {
     update_boot
 
 
-    sed -i 's/#alias poweroff/#lias poweroff/g' /etc/bash/bashrc.d/myaliases.bash
+    sed -i 's/#alias poweroff/alias poweroff/g' /etc/bash/bashrc.d/myaliases.bash
     sed -i 's/#alias reboot/alias reboot/g' /etc/bash/bashrc.d/myaliases.bash
 
     echo "[+] Switched to OpenRC."
